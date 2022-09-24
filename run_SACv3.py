@@ -27,11 +27,11 @@ def hyperparameters(env_name="Hopper-v4"):
                         type=str, help='note about what to change')
 
     #multi processing
-    parser.add_argument("--num_worker", default=10, type=int, help="The number of agents for collect data.")
+    parser.add_argument("--num_worker", default=3, type=int, help="The number of agents for collect data.")
     parser.add_argument("--num_update_worker", default=3, type=int, help="The number of agents for update networks.")
     parser.add_argument('--eval-step', default=10000, type=int, help='Frequency in performance evaluation')
-    parser.add_argument('--max-step', default=1e7, type=int, help='Maximum training step')
-    parser.add_argument('--model_train_start_step', default=5.0e6, type=int)
+    parser.add_argument('--max-step', default=2e6, type=int, help='Maximum training step')
+    parser.add_argument('--model_train_start_step', default=1e6, type=int)
 
     # estimate a model dynamics
     parser.add_argument('--develop-mode', '-dm', default='imn', help="none, mn, imn")
