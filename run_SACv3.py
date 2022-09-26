@@ -27,11 +27,12 @@ def hyperparameters(env_name="Hopper-v4"):
                         type=str, help='note about what to change')
 
     #multi processing
-    parser.add_argument("--num_worker", default=1, type=int, help="The number of agents for collect data.")
-    parser.add_argument("--num_update_worker", default=1, type=int, help="The number of agents for update networks.")
-    parser.add_argument('--eval-step', default=10000, type=int, help='Frequency in performance evaluation')
-    parser.add_argument('--max-step', default=2e6, type=int, help='Maximum training step')
-    parser.add_argument('--model_train_start_step', default=1e6, type=int)
+    parser.add_argument("--num_worker", '-nw', default=1, type=int, help="The number of agents for collect data.")
+    parser.add_argument("--num_update_worker", '-nuw', default=1, type=int, help="The number of agents for update networks.")
+    parser.add_argument('--eval_step', '-es', default=10000, type=int, help='Frequency in performance evaluation')
+    parser.add_argument('--max_step', '-ms', default=6e6, type=int, help='Maximum training step')
+    parser.add_argument('--model_train_start_step', '-mtss', default=3e6, type=int)
+    parser.add_argument('--reg_weight', '-rw', default=1.0e-6, type=int)
 
     # estimate a model dynamics
     parser.add_argument('--develop-mode', '-dm', default='imn', help="none, mn, imn")
@@ -40,7 +41,6 @@ def hyperparameters(env_name="Hopper-v4"):
     parser.add_argument('--model-lr', default=3e-4, type=float)
     parser.add_argument('--inv-model-lr-dnn', default=3e-4, type=float)
     parser.add_argument('--kl-weight', default=0.05, type=float)
-    parser.add_argument('--reg_weight', default=1.0e-5, type=int)
     parser.add_argument("--eps-p", default=1e-1, type=float, help="Standard deviation for spatial smoothness")
     parser.add_argument("--lambda-t", default=1e-1, type=float, help="Temporal smoothness for policy loss")
     parser.add_argument("--lambda-s", default=5e-1, type=float, help="Spatial smoothness for policy loss")
@@ -50,7 +50,7 @@ def hyperparameters(env_name="Hopper-v4"):
 
     #environment
     parser.add_argument('--domain-type', default='gym', type=str, help='gym')
-    parser.add_argument('--env-name', default=env_name, help='Pendulum-v0, MountainCarContinuous-v0, Door')
+    parser.add_argument('--env-name', '-en', default=env_name, help='Pendulum-v0, MountainCarContinuous-v0, Door')
     parser.add_argument('--robots', default='Panda', help='if domain type is suite, choose the robots')
     parser.add_argument('--discrete', default=False, type=bool, help='Always Continuous')
     parser.add_argument('--render', default=False, type=bool)
@@ -171,11 +171,14 @@ def main(args):
 
 
 if __name__ == '__main__':
-    freeze_support()
-
-    env_list = ["Walker2d-v4", "Ant-v4", "Humanoid-v4", "Hopper-v4", "HalfCheetah-v4", "HumanoidStandup-v4"]
-
-    for env in env_list:
-        args = hyperparameters(env)
-        main(args)
+    # freeze_support()
+    #
+    # # env_list = ["Walker2d-v4", "Ant-v4", "Humanoid-v4", "Hopper-v4", "InvertedDoublePendulum-v4", "HumanoidStandup-v4"]
+    # env_list = ["HalfCheetah-v4", "Hopper-v4", "Humanoid-v4", "Walker2d-v4", "Ant-v4", "HumanoidStandup-v4"]
+    #
+    # for env in env_list:
+    #     args = hyperparameters(env)
+    #     main(args)
+    args = hyperparameters()
+    main(args)
 

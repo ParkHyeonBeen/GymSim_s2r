@@ -7,6 +7,7 @@ from Common.Utils import copy_weight, soft_update
 from Network.Basic_Network import Q_Network
 from Network.Gaussian_Actor import Squashed_Gaussian_Actor
 from Network.Model_Network import *
+import pdb
 
 class SAC_v3:
     def __init__(self, state_dim, action_dim, replay_buffer, args, device):
@@ -114,11 +115,17 @@ class SAC_v3:
         critic2_loss = F.mse_loss(input=self.critic2(s, a), target=target_q)
 
         self.critic1_optimizer.zero_grad()
-        critic1_loss.backward()
+        try:
+            critic1_loss.backward()
+        except Exception:
+            pdb.set_trace()
         self.critic1_optimizer.step()
 
         self.critic2_optimizer.zero_grad()
-        critic2_loss.backward()
+        try:
+            critic2_loss.backward()
+        except Exception:
+            pdb.set_trace()
         self.critic2_optimizer.step()
 
         return ns_action
