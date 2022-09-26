@@ -40,7 +40,7 @@ def model_trainer(id, algorithm, rewards_queue, replay_buffer, model_path, args,
     while algorithm.worker_step < args.max_step:
 
         if args.model_train_start_step <= algorithm.worker_step < args.model_train_start_step + env.spec.max_episode_steps:
-            load_model(algorithm.actor, model_path["policy"], "policy_best")
+            load_model(algorithm.actor, model_path["policy"], "policy_better")
 
         episode_reward = 0
         observation = env.reset()

@@ -27,8 +27,8 @@ def hyperparameters(env_name="Hopper-v4"):
                         type=str, help='note about what to change')
 
     #multi processing
-    parser.add_argument("--num_worker", default=3, type=int, help="The number of agents for collect data.")
-    parser.add_argument("--num_update_worker", default=3, type=int, help="The number of agents for update networks.")
+    parser.add_argument("--num_worker", default=1, type=int, help="The number of agents for collect data.")
+    parser.add_argument("--num_update_worker", default=1, type=int, help="The number of agents for update networks.")
     parser.add_argument('--eval-step', default=10000, type=int, help='Frequency in performance evaluation')
     parser.add_argument('--max-step', default=2e6, type=int, help='Maximum training step')
     parser.add_argument('--model_train_start_step', default=1e6, type=int)
@@ -173,7 +173,7 @@ def main(args):
 if __name__ == '__main__':
     freeze_support()
 
-    env_list = ["HalfCheetah-v4", "Hopper-v4", "Walker2d-v4", "Ant-v4", "Humanoid-v4", "HumanoidStandup-v4"]
+    env_list = ["Walker2d-v4", "Ant-v4", "Humanoid-v4", "Hopper-v4", "HalfCheetah-v4", "HumanoidStandup-v4"]
 
     for env in env_list:
         args = hyperparameters(env)

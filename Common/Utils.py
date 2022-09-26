@@ -302,14 +302,13 @@ def get_algorithm_info(algorithm_name, state_dim, action_dim, device):
 
 def save_policy(policy, score_best, score_now, alive_rate, path):
 
-    if score_now > score_best and alive_rate > 0.9:
-        torch.save(policy.state_dict(), path + "/policy_best")
-        return score_now
-    elif score_now > score_best:
+    if score_now > score_best:
         torch.save(policy.state_dict(), path + "/policy_better")
+        if alive_rate > 0.8:
+            torch.save(policy.state_dict(), path + "/policy_best")
         return score_now
-    else:
-        torch.save(policy.state_dict(), path + "/policy_current")
+
+    torch.save(policy.state_dict(), path + "/policy_current")
 
 def load_model(network, path, fname):
     if "bnn" in fname:
