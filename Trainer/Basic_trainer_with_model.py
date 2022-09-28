@@ -53,14 +53,17 @@ def model_trainer(id, algorithm, rewards_queue, replay_buffer, model_path, args,
         mem_action = np.concatenate([np.zeros(action_dim)] * args.n_history)
 
         for step in range(env.spec.max_episode_steps):
-            if algorithm.worker_step > args.training_start * args.num_worker:
-                if args.model_train_start_step <= algorithm.worker_step and args.use_prev_policy is False:
-                    action = algorithm.eval_action(observation)
-                else:
-                    action = algorithm.get_action(observation)
+            if args.use_prev_policy is True:
+                action = algorithm.eval_action(observation)
             else:
-                env_action = env.action_space.sample()
-                action = normalize(env_action, max_action, min_action)
+                if algorithm.worker_step > args.training_start * args.num_worker:
+                    if args.model_train_start_step <= algorithm.worker_step:
+                        action = algorithm.eval_action(observation)
+                    else:
+                        action = algorithm.get_action(observation)
+                else:
+                    env_action = env.action_space.sample()
+                    action = normalize(env_action, max_action, min_action)
 
             env_action = denormalize(action, max_action, min_action)
 
