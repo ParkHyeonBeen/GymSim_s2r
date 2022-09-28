@@ -39,8 +39,11 @@ def model_trainer(id, algorithm, rewards_queue, replay_buffer, model_path, args,
 
     while algorithm.worker_step < args.max_step:
 
-        if args.model_train_start_step <= algorithm.worker_step < args.model_train_start_step + env.spec.max_episode_steps:
-            load_model(algorithm.actor, model_path["policy"], "policy_better")
+        if args.use_prev_policy is True:
+            load_model(algorithm.actor, "./Etc/policys/" + args.env_name, "policy_best")
+        else:
+            if args.model_train_start_step <= algorithm.worker_step < args.model_train_start_step + env.spec.max_episode_steps:
+                load_model(algorithm.actor, model_path["policy"], "policy_better")
 
         episode_reward = 0
         observation = env.reset()
@@ -51,7 +54,7 @@ def model_trainer(id, algorithm, rewards_queue, replay_buffer, model_path, args,
 
         for step in range(env.spec.max_episode_steps):
             if algorithm.worker_step > args.training_start * args.num_worker:
-                if args.model_train_start_step <= algorithm.worker_step:
+                if args.model_train_start_step <= algorithm.worker_step and args.use_prev_policy is False:
                     action = algorithm.eval_action(observation)
                 else:
                     action = algorithm.get_action(observation)
@@ -127,8 +130,8 @@ def model_trainer(id, algorithm, rewards_queue, replay_buffer, model_path, args,
                         env_action = denormalize(action, max_action, min_action)
                         next_observation, reward, done, _ = env.step(env_action)
 
-                        if args.develop_mode == "imn" and algorithm.worker_step.tolist()[
-                            0] > args.model_train_start_step:
+                        if (args.develop_mode == "imn" and algorithm.worker_step.tolist()[
+                            0] > args.model_train_start_step) or args.use_prev_policy is True:
                             algorithm.imn.evaluates()
 
                             action_hat = algorithm.imn(mem_observation,
@@ -164,7 +167,8 @@ def model_trainer(id, algorithm, rewards_queue, replay_buffer, model_path, args,
                 if best_score_tmp is not None:
                     best_score = best_score_tmp
 
-                if args.develop_mode == "imn" and algorithm.worker_step.tolist()[0] > args.model_train_start_step:
+                if (args.develop_mode == "imn" and algorithm.worker_step.tolist()[0] > args.model_train_start_step)\
+                    or args.use_prev_policy is True:
                     eval_error = np.mean([np.mean(episode_errors) for episode_errors in episodes_model_error],
                                          keepdims=True)
                     eval_data.put_data(eval_error)

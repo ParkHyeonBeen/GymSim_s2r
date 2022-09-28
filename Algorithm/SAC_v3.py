@@ -153,7 +153,10 @@ class SAC_v3:
         a_hat = self.imn(s_history, prev_a, ns)
 
         def get_kl_weight(epoch):
-            return min(1, self.args.reg_weight * (epoch - self.args.model_train_start_step) / self.args.model_train_start_step)
+            if self.args.use_prev_policy is True:
+                return min(1, self.args.reg_weight * epoch)
+            else:
+                return min(1, self.args.reg_weight * (epoch - self.args.model_train_start_step))
 
         if self.args.net_type == "bnn" and self.worker_step > self.args.model_train_start_step:
             model_loss = self.imn_criterion(a_hat, a, 1, get_kl_weight(self.worker_step).to(self.device)).mean()
@@ -167,7 +170,7 @@ class SAC_v3:
     def update(self, worker_step):
 
         self.current_step += 1
-        if worker_step < self.args.model_train_start_step:
+        if worker_step < self.args.model_train_start_step and self.args.use_prev_policy is False:
             s_history, a_history, r, ns, d = self.buffer.sample(self.batch_size)
 
             s = s_history[:, :self.state_dim]

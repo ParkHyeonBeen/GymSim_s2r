@@ -32,10 +32,11 @@ def hyperparameters(env_name="Hopper-v4"):
     parser.add_argument('--eval_step', '-es', default=10000, type=int, help='Frequency in performance evaluation')
     parser.add_argument('--max_step', '-ms', default=6e6, type=int, help='Maximum training step')
     parser.add_argument('--model_train_start_step', '-mtss', default=3e6, type=int)
-    parser.add_argument('--reg_weight', '-rw', default=1.0e-6, type=int)
+    parser.add_argument('--reg_weight', '-rw', default=1.0e-12, type=int)
 
     # estimate a model dynamics
     parser.add_argument('--develop-mode', '-dm', default='imn', help="none, mn, imn")
+    parser.add_argument('--use_prev_policy', '-upp', default='True', type=str2bool, help="if True, use prev best policy")
     parser.add_argument('--net-type', default="bnn", help='dnn, bnn')
     parser.add_argument('--model-hidden-dim', default=256, type=int)
     parser.add_argument('--model-lr', default=3e-4, type=float)
