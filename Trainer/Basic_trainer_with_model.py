@@ -136,7 +136,6 @@ def model_trainer(id, algorithm, rewards_queue, replay_buffer, model_path, args,
                         if (args.develop_mode == "imn" and algorithm.worker_step.tolist()[
                             0] > args.model_train_start_step) or args.use_prev_policy is True:
                             algorithm.imn.evaluates()
-
                             action_hat = algorithm.imn(mem_observation,
                                                        mem_action,
                                                        next_observation).detach().cpu().numpy()
