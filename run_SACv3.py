@@ -228,10 +228,10 @@ def main(args):
 
         for dist_scale in np.round(np.linspace(min_dist, max_dist, args.num_dist+1), 3):
             if args.add_to == "action":
-                print("disturbance scale: ", dist_scale * 100, " percent of max thrust", file=result_txt)
-                print("disturbance scale: ", dist_scale * 100, " percent of max thrust")
-                eval_reward.get_xticks(np.round(dist_scale * 100, 3))
-                eval_success.get_xticks(np.round(dist_scale * 100, 3))
+                print("disturbance scale: ", dist_scale / max_action * 100, " percent of max thrust", file=result_txt)
+                print("disturbance scale: ", dist_scale / max_action * 100, " percent of max thrust")
+                eval_reward.get_xticks(np.round(dist_scale / max_action * 100, 3))
+                eval_success.get_xticks(np.round(dist_scale / max_action * 100, 3))
             else:
                 print("standard deviation of state noise: ", dist_scale, file=result_txt)
                 print("standard deviation of state noise: ", dist_scale)
