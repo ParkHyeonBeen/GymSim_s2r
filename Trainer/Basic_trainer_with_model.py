@@ -203,7 +203,7 @@ def model_trainer(id, algorithm, rewards_queue, replay_buffer, model_path, args,
                 logging.error(
                     'Episode Reward: {1:.2f} | Success cnt: {4} | Local Step: {3} | Global Episode: {0} | Global Worker Step: {2}| Sparsification ratio : {5:.3f}'
                     .format(algorithm.eps.tolist()[0], avg_reward, algorithm.worker_step.tolist()[0],
-                            step + 1, success_cnt, nn_ard.get_dropped_params_ratio(algorithm.imn)))
+                            step + 1, success_cnt, 100*nn_ard.get_dropped_params_ratio(algorithm.imn)))
             except:
                 logging.error(traceback.format_exc())
     rewards_queue.put(None)

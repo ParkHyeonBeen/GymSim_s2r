@@ -158,7 +158,7 @@ class SAC_v3:
             else:
                 return min(1, self.args.reg_weight * (epoch - self.args.model_train_start_step))
 
-        if self.args.use_prev_policy is True or (self.args.net_type == "bnn" and self.worker_step > self.args.model_train_start_step):
+        if self.args.net_type == "bnn" and (self.args.use_prev_policy is True or self.worker_step > self.args.model_train_start_step):
             model_loss = self.imn_criterion(a_hat, a, 1, get_kl_weight(self.worker_step).to(self.device)).mean()
         else:
             model_loss = F.smooth_l1_loss(a, a_hat).mean()

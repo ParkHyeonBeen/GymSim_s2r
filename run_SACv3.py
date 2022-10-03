@@ -38,8 +38,8 @@ def hyperparameters(env_name="Hopper-v4"):
     ## For disturbance
     parser.add_argument('--num_dist', '-dn', default=20, type=int, help='the number of disturbance in certain range')
     parser.add_argument('--add_to', '-ad', default='action', type=str, help='action, state')
-    parser.add_argument('--max_dist_action', '-xda', default=0.1, type=float, help='max mag of dist for action')
-    parser.add_argument('--min_dist_action', '-nda', default=0.00, type=float, help='min mag of dist for action')
+    parser.add_argument('--max_dist_action', '-xda', default=0.2, type=float, help='max mag of dist for action')
+    parser.add_argument('--min_dist_action', '-nda', default=0.1, type=float, help='min mag of dist for action')
     parser.add_argument('--max_dist_state', '-xds', default=1.0, type=float, help='max mag of dist for state')
     parser.add_argument('--min_dist_state', '-nds', default=0.0, type=float, help='min mag of dist for state')
 
@@ -49,7 +49,7 @@ def hyperparameters(env_name="Hopper-v4"):
     parser.add_argument('--eval_step', '-es', default=100, type=int, help='Frequency in performance evaluation')
     parser.add_argument('--max_step', '-ms', default=6e6, type=int, help='Maximum training step')
     parser.add_argument('--model_train_start_step', '-mtss', default=3e6, type=int)
-    parser.add_argument('--reg_weight', '-rw', default=1.0e-15, type=int)
+    parser.add_argument('--reg_weight', '-rw', default=1.0e-13, type=int)
 
     # estimate a model dynamics
     parser.add_argument('--develop-mode', '-dm', default='imn', help="none, mn, imn")
@@ -214,7 +214,7 @@ def main(args):
         result_txt = open(log_dir["test"] + "/test_result_%s" % time.strftime("%m%d-%H%M_") + args.develop_mode + "_" + args.net_type + "_" + args.add_to + ".txt", 'w')
 
         if args.model_on:
-            load_model(algorithm.imn, log_dir[args.net_type], "better_"+args.net_type)
+            load_model(algorithm.imn, log_dir[args.net_type], "best_"+args.net_type)
             algorithm.imn.evaluates()
             print('Sparsification ratio: %.3f%%' % (100. * nn_ard.get_dropped_params_ratio(algorithm.imn)))
             print('Sparsification ratio: %.3f%%' % (100. * nn_ard.get_dropped_params_ratio(algorithm.imn)), file=result_txt)
