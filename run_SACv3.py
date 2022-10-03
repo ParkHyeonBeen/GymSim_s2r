@@ -39,7 +39,7 @@ def hyperparameters(env_name="Hopper-v4"):
     parser.add_argument('--num_dist', '-dn', default=20, type=int, help='the number of disturbance in certain range')
     parser.add_argument('--add_to', '-ad', default='action', type=str, help='action, state')
     parser.add_argument('--max_dist_action', '-xda', default=0.2, type=float, help='max mag of dist for action')
-    parser.add_argument('--min_dist_action', '-nda', default=0.1, type=float, help='min mag of dist for action')
+    parser.add_argument('--min_dist_action', '-nda', default=0.0, type=float, help='min mag of dist for action')
     parser.add_argument('--max_dist_state', '-xds', default=1.0, type=float, help='max mag of dist for state')
     parser.add_argument('--min_dist_state', '-nds', default=0.0, type=float, help='min mag of dist for state')
 

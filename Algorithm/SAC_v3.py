@@ -138,7 +138,7 @@ class SAC_v3:
         min_aq_rep = torch.min(self.critic1(s, s_action), self.critic2(s, s_action))
         policy_loss = (self.alpha * s_logpi - min_aq_rep).mean()
 
-        policy_loss_s = torch.norm(s_action - random_s_action, dim=--1).mean()
+        policy_loss_s = torch.norm(s_action - random_s_action, dim=-1).mean()
         policy_loss_t = torch.norm(s_action - ns_action, dim=-1).mean()
         policy_loss += self.lambda_t * policy_loss_t
         policy_loss += self.lambda_s * policy_loss_s
