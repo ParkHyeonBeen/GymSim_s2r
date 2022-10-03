@@ -1,11 +1,14 @@
 from Common.Utils import *
 
-def save_model(network, loss_best, loss_now, path):
+def save_model(network, loss_best, loss_now, path, ard=False):
     if loss_best > loss_now:
-        torch.save(network.state_dict(), path + "/better_" + path[-3:])
-        return loss_now
+        if ard:
+            torch.save(network.state_dict(), path + "/best_" + path[-3:])
+        else:
+            torch.save(network.state_dict(), path + "/better_" + path[-3:])
     else:
-        torch.save(network.state_dict(), path + "/current_" + path[-3:])
+        if not ard:
+            torch.save(network.state_dict(), path + "/current_" + path[-3:])
 
 def load_models(args_tester, model):
 

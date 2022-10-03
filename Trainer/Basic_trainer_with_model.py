@@ -3,6 +3,7 @@ import gym
 from Common.Utils_model import *
 from Network.Model_Network import *
 from Common.logger import *
+import torch_ard as nn_ard
 
 eval_data = DataManager()
 
@@ -22,6 +23,7 @@ def model_trainer(id, algorithm, rewards_queue, replay_buffer, model_path, args,
     eval_freq = args.eval_step
     best_score = None
     best_error = None
+    best_error_bnn = None
 
     """
     fail score for the environments which don't have uncertain criterion about fail
@@ -182,6 +184,18 @@ def model_trainer(id, algorithm, rewards_queue, replay_buffer, model_path, args,
                                                 model_path[args.net_type])
                     if best_error_tmp is not None:
                         best_error = best_error_tmp
+
+                    if args.net_type == "bnn":
+                        if best_error_bnn is None:
+                            best_error_bnn = eval_error[0]/nn_ard.get_dropped_params_ratio(algorithm.imn)
+
+                        now_error = eval_error[0]/nn_ard.get_dropped_params_ratio(algorithm.imn)
+
+                        best_error_bnn_tmp = save_model(algorithm.imn, best_error_bnn, now_error,
+                                                    model_path[args.net_type], ard=True)
+                        if best_error_bnn_tmp is not None:
+                            best_error_bnn = best_error_bnn_tmp
+
                     eval_data.plot_fig(model_path['train'] + "/model_error.png")
 
                 rewards = [avg_reward, algorithm.worker_step.tolist()[0]]
